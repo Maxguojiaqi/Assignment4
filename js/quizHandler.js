@@ -1,9 +1,23 @@
 // declare all required variables 
 let gameStartBtn = document.querySelector("#gameBeginBtn");
 let mainContent = document.querySelector("#main-content");
-let questionContent = document.createElement('div');
-let resultContent = document.createElement('div');
+
 let timerContent = document.createElement('h6');
+
+let questionContent = document.createElement('div');
+
+let finalResultContent = document.createElement('div');
+// create score div section to display the resultes, number of right and wrongs.
+let rightWrongContent = document.createElement('div');
+rightWrongContent.setAttribute('class','mt-2 text-center');
+let lineDivider = document.createElement('hr');
+let currentResultContent = document.createElement('h5');
+currentResultContent.setAttribute('class','text-info');
+currentResultContent.innerText = 'Correctly Answered: 0/0';
+rightWrongContent.appendChild(lineDivider);
+rightWrongContent.appendChild(currentResultContent);
+// current answered question counter
+let correctNumCounter = 0;
 
 let secondsLeft = 60;
 let gameEnded = false;
@@ -53,10 +67,17 @@ questionContent.addEventListener('click', function(event){
         if(QandAList[questionIndex].correctAnswer !== element.textContent )
         {
             secondsLeft = secondsLeft - 10;
-            // below line is to make sure there are no negative scores
+            // below line is to make sure there are no negative scores/seconds
             secondsLeft > 0 ? secondsLeft : secondsLeft = 0;
-            alert("You Picked Wrong! Your time will be deducted by 10!");
         }
+        else 
+        {
+            // if answer correctly, increment the number of correctly answered
+            correctNumCounter++;
+        }
+        // create the display messsage for the result content
+        let currentQuestionsNum = questionIndex+1;
+        currentResultContent.innerText = 'Correctly Answered: '+ correctNumCounter + '/' + currentQuestionsNum;
         // loop through all the questions and display final score
         if(questionIndex < 5)
         {
@@ -82,6 +103,8 @@ function generateFirstQuestion()
     setTime(timerContent);
     createDOMQuestion(QandAList[questionIndex]);
     mainContent.appendChild(questionContent);
+    mainContent.appendChild(rightWrongContent);
+    
 }
 
 // when generate next question
@@ -92,22 +115,25 @@ function generateNextQuestion()
     questionContent.innerHTML ='';
     createDOMQuestion(QandAList[questionIndex]);
     mainContent.appendChild(questionContent);
+    mainContent.appendChild(rightWrongContent);
 }
 
 // when generate final score
 // - clear up the question content, main content and timer content
 // - end game, stop counter
-// - add final resultContent content to the main content
+// - add final finalResultContent content to the main content
 
 function generateFinalScore()
 {
     gameEnded = true;
     mainContent.innerHTML = '';
     questionContent.innerHTML = '';
-    resultContent.innerHTML = '';
+    finalResultContent.innerHTML = '';
     timerContent.innerHTML ='';
+    // rightWrongContent.innerHTML = '';
     createDOMResult();
-    mainContent.appendChild(resultContent);
+    mainContent.appendChild(finalResultContent);
+    mainContent.appendChild(rightWrongContent);
 }
 
 // Create DOM Question Content
@@ -205,7 +231,7 @@ function createDOMResult()
 
     // append all the child in order
     domSections.forEach(section => {
-        resultContent.appendChild(section);
+        finalResultContent.appendChild(section);
         
     });
 }
