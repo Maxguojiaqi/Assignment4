@@ -34,10 +34,10 @@ Below is the main screen
 ```
 ![scoreboard](./Assets/scoreboard.JPG)
 
-```
+
 Website leverage bootstrap built-in responsive design and some bootstrap pre-built components.
 
 For more infromation of bootstrap, visit: https://getbootstrap.com/ For more information of bootstrap grid and media queries, visit: https://getbootstrap.com/docs/4.4/layout/grid/
-```
+
 
 
