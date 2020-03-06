@@ -68,7 +68,11 @@ questionContent.addEventListener('click', function(event){
         {
             secondsLeft = secondsLeft - 10;
             // below line is to make sure there are no negative scores/seconds
-            secondsLeft > 0 ? secondsLeft : secondsLeft = 0;
+            if (secondsLeft < 0)
+            { 
+                secondsLeft =0;
+                generateFinalScore();
+            }
         }
         else 
         {
@@ -78,8 +82,8 @@ questionContent.addEventListener('click', function(event){
         // create the display messsage for the result content
         let currentQuestionsNum = questionIndex+1;
         currentResultContent.innerText = 'Correctly Answered: '+ correctNumCounter + '/' + currentQuestionsNum;
-        // loop through all the questions and display final score
-        if(questionIndex < 5)
+        // loop through all the questions till all questions is answered or game ended, display final score
+        if(questionIndex < 5 && !gameEnded)
         {
             questionIndex++;
             generateNextQuestion();
@@ -250,9 +254,10 @@ function setTime(timeEl) {
         secondsLeft--;
         timeEl.textContent ="*** " + secondsLeft + " seconds left till game end.";
 
-        if(secondsLeft === 0) {
+        if(secondsLeft <= 0) {
         // when time runs out, clear time interval and display final score
         clearInterval(timerInterval);
+        secondsLeft =0;
         generateFinalScore();
         }
     }
